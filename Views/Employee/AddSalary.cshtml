@@ -1,0 +1,24 @@
+﻿@using AsssignmentMVC.Dtos
+@model EmployeeSalaryDto
+
+<h1>Add Monthly Salary</h1>
+<form method="post" action="/Employee/AddSalary">
+    <div>
+        <label for="EmployeeId">Employee:</label>
+        <select id="EmployeeId" name="EmployeeId" required>
+            @foreach (var employee in ViewBag.Employees)
+            {
+                <option value="@employee.Id">@employee.FirstName @employee.LastName</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label for="SalaryDate">Salary Date:</label>
+        <input type="date" id="SalaryDate" name="SalaryDate" required />
+    </div>
+    <div>
+        <label for="Amount">Amount:</label>
+        <input type="number" id="Amount" name="Amount" step="0.01" min="0" required />
+    </div>
+    <button type="submit">Add Salary</button>
+</form>

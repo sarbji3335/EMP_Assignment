@@ -1,0 +1,154 @@
+﻿@using AsssignmentMVC.Dtos
+@model List<EmployeeDto> // Assuming you're passing a collection of Employee to the view
+
+<h1>Employees Listing</h1>
+<a href="/Employee/Add" style="float: right;">Add New Employee</a>&nbsp; &nbsp;
+<a href="/Employee/AddSalary" class="btn btn-info float-right">Add Employee Salary</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>City</th>
+            <th>ZIP</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                @* <td><a href="#" onclick="openModal('@employee.Id'); return false;">@employee.Id</a></td> *@
+                <td><a class="btn btn-link" onclick="openEditModal('@employee.Id')">@employee.Id</a></td>
+                <td>@employee.FirstName</td>
+                <td>@employee.LastName</td>
+                <td>@employee.City</td>
+                <td>@employee.Zip</td>
+                <td>@employee.CreatedDate.ToShortDateString()</td>
+                <td>
+                    <a class="btn btn-primary" onclick="openSalaryModal('@employee.Id')">View Salary</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="employee-details"></div>
+
+<!-- Modal -->
+<div id="editEmployeeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+              @*   <h4 class="modal-title">Edit Employee</h4> *@
+                <a class="btn btn-success" asp-action="Index">&times;</a>
+                @* <span aria-hidden="true" onclick="clearForm()">&times;</span> *@
+                
+            </div>
+            <div class="modal-body">
+                <!-- Partial view to render edit form -->
+                <div id="editEmployeeForm"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- SalaryModal -->
+<div id="employeeSalaryModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*   <h4 class="modal-title">Edit Employee</h4> *@
+                <a class="btn btn-success" asp-action="Index">&times;</a>
+
+            </div>
+            <div class="modal-body">
+                <!-- Partial view to render edit form -->
+                <div id="editEmployeeForm"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function clearForm() {
+        $('#editEmployeeForm').modal('hide');
+        // Reset or clear the input fields
+        // $('#employeeIdInput').val('');
+        // $('#salaryAmountInput').val('');
+        // Optionally, reset other input fields if needed
+    }
+    function openEditModal(id) {
+        $.get("/Employee/Details?id=" + id, function (data) {
+            $("#editEmployeeForm").html(data);
+            $("#editEmployeeModal").modal("show");
+        });
+    }
+</script>
+
+
+<script>
+    function openSalaryModal(id) {
+        $.get("/Employee/GetSalaryRecords?employeeId=" + id, function (data) {
+            $("#employeeSalaryModal .modal-body").html(data);
+            $("#employeeSalaryModal").modal("show");
+        });
+    }
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.employee-link').click(function (e) {
+            e.preventDefault();
+            var employeeId = $(this).data('employee-id');
+            $.ajax({
+                url: '@Url.Action("Details", "Employee")',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (data) {
+                    $('#employee-details').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+@* <script>
+    $(document).ready(function () {
+        $('#openDialogButton').click(function () {
+            // Load the partial view into the dialog container
+            $('#dialogContainer').load('/Employee/GetSalaryRecords?employeeId=123', function () {
+                // Open the dialog once the content is loaded
+                $('#dialogContainer').dialog({
+                    modal: true,
+                    width: 400,
+                    height: 'auto',
+                    title: 'Salary Records',
+                    buttons: {
+                        "Close": function () {
+                            // Close dialog
+                            $(this).dialog("close");
+                        }
+                    },
+                    close: function () {
+                        // Cleanup dialog content after close
+                        $(this).dialog("destroy").empty();
+                    }
+                });
+            });
+        });
+    });
+</script>
+ *@

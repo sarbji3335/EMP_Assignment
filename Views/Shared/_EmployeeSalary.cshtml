@@ -1,0 +1,39 @@
+﻿@using AsssignmentMVC.Dtos
+@model IEnumerable<EmployeeSalaryDto>
+
+
+    <h1>Salary Details</h1>
+
+@if (Model.Any())
+{
+<table border="1">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>SalaryDate</td>
+            <td>Ammount</td>
+
+        </tr>
+    </thead>
+    <tbody>
+
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.SalaryDate</td>
+                    <td>@employee.Amount</td>
+                </tr>
+            }
+        
+
+    </tbody>
+</table>
+        }
+        else
+        {
+    <span>Not found</span>
+        }
+
+
+
