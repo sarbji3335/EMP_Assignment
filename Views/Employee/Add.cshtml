@@ -1,0 +1,23 @@
+﻿@using AsssignmentMVC.Dtos
+@model EmployeeDto
+
+<h1>Add New Employee</h1>
+<form method="post" action="/Employee/Add">
+    <div>
+        <label for="FirstName">First Name:</label>
+        <input type="text" id="FirstName" name="FirstName" required />
+    </div>
+    <div>
+        <label for="LastName">Last Name:</label>
+        <input type="text" id="LastName" name="LastName" />
+    </div>
+    <div>
+        <label for="City">City:</label>
+        <input type="text" id="City" name="City" />
+    </div>
+    <div>
+        <label for="Zip">ZIP:</label>
+        <input type="text" id="Zip" name="Zip" maxlength="10" />
+    </div>
+    <button type="submit">Add Employee</button>
+</form>
